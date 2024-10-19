@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
+import { PermissionsList } from 'src/constants/permissions';
 import { RoleEntity } from 'src/database/entities/role.entity';
 import { UserEntity } from 'src/database/entities/user.entity';
 import { Repository } from 'typeorm';
@@ -29,22 +30,19 @@ export class UsersService {
         this.configService.get('defaultUser.password'),
         hashRounds,
       );
+
       console.log('Setting Default User As Owner');
-      const ownerRole = {
-        name: 'Owner',
-        getAllUsers: true,
-        getUser: true,
-        addUser: true,
-        updateUser: true,
-        deleteUser: true,
-      };
+      // Initialize Admin Role with all permissions set to true
+      const ownerRole: Partial<RoleEntity> = { name: 'Admin' };
+      Object.values(PermissionsList).forEach((permission) => {
+        ownerRole[permission] = true;
+      });
       const ownerRoleData = this.rolesRepository.create(ownerRole);
-      await this.rolesRepository.save(ownerRoleData);
+      const savedOwnerRoleData = await this.rolesRepository.save(ownerRoleData);
       const defaultUser = {
         email: this.configService.get('defaultUser.email'),
         hash: hash,
-        isActive: true,
-        roles: [ownerRoleData],
+        roles: [savedOwnerRoleData],
       };
       const userData = this.usersRepository.create(defaultUser);
       await this.usersRepository.save(userData);
@@ -53,15 +51,15 @@ export class UsersService {
     const checkUserRole = await this.rolesRepository.findOneBy({
       name: 'User',
     });
+
     if (!checkUserRole) {
       const userRole = {
         name: 'User',
-        getAllUsers: true,
-        getUser: false,
-        addUser: false,
-        updateUser: false,
-        deleteUser: false,
       };
+      // Initialize User Role with all permissions set to false
+      Object.values(PermissionsList).forEach((permission) => {
+        userRole[permission] = false;
+      });
       const userRoleData = this.rolesRepository.create(userRole);
       await this.rolesRepository.save(userRoleData);
     }

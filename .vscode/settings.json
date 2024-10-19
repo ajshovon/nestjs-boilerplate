@@ -9,7 +9,15 @@
   },
   "editor.formatOnSave": true,
   "editor.tabSize": 2,
-  "cSpell.words": ["dtos", "signin", "typeorm", "nextjs", "nestjs", "nextui"],
+  "cSpell.words": [
+    "ajshovon",
+    "dtos",
+    "nestjs",
+    "nextjs",
+    "nextui",
+    "signin",
+    "typeorm"
+  ],
   "javascript.preferences.quoteStyle": "single",
   "typescript.preferences.quoteStyle": "single",
   "prettier.singleQuote": true,
