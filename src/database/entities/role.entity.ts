@@ -24,7 +24,7 @@ export class RoleEntity {
   [PermissionsList.GET_USER]: boolean;
 
   @Column()
-  [PermissionsList.EDIT_USER]: boolean;
+  [PermissionsList.ADD_USER]: boolean;
 
   @Column()
   [PermissionsList.UPDATE_USER]: boolean;

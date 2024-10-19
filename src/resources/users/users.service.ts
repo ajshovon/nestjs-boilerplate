@@ -29,12 +29,13 @@ export class UsersService {
         this.configService.get('defaultUser.password'),
         hashRounds,
       );
-
       console.log('Setting Default User As Owner');
       const ownerRole = {
         name: 'Owner',
+        getAllUsers: true,
         getUser: true,
-        editUser: true,
+        addUser: true,
+        updateUser: true,
         deleteUser: true,
       };
       const ownerRoleData = this.rolesRepository.create(ownerRole);
@@ -55,8 +56,10 @@ export class UsersService {
     if (!checkUserRole) {
       const userRole = {
         name: 'User',
+        getAllUsers: true,
         getUser: false,
-        editUser: false,
+        addUser: false,
+        updateUser: false,
         deleteUser: false,
       };
       const userRoleData = this.rolesRepository.create(userRole);

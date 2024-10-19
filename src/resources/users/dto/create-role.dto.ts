@@ -39,7 +39,7 @@ export class CreateRoleDto {
   @Transform(({ obj, key }) => {
     return obj[key] === 'true' ? true : obj[key] === 'false' ? false : obj[key];
   })
-  [PermissionsList.EDIT_USER]: boolean;
+  [PermissionsList.ADD_USER]: boolean;
 
   @ApiProperty({
     example: true,
